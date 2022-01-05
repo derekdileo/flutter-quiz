@@ -42,19 +42,9 @@ class _QuizPageState extends State<QuizPage> {
 
   List<Icon> scoreKeeper = [];
 
-  Icon checkIconGreen = const Icon(
-    Icons.check,
-    color: Colors.green,
-  );
-
   Icon checkIconWhite = const Icon(
     Icons.check,
     color: Colors.white,
-  );
-
-  Icon closeIconRed = const Icon(
-    Icons.close,
-    color: Colors.red,
   );
 
   Icon closeIconWhite = const Icon(
@@ -65,11 +55,11 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer(String answer) {
     if (questionList[questionCount].answerText.toString() == answer) {
       scoreKeeper.add(
-        checkIconGreen,
+        const Icon(Icons.check, color: Colors.green),
       );
     } else {
       scoreKeeper.add(
-        closeIconRed,
+        const Icon(Icons.close, color: Colors.red),
       );
     }
   }
