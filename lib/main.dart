@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'question.dart';
+import 'quiz_brain.dart';
+
+QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(const Quizzler());
 
@@ -33,13 +35,6 @@ class _QuizPageState extends State<QuizPage> {
   // Instantiate local variables
   int questionCount = 0;
 
-  List<Question> questionList = [
-    Question('You can lead a cow down stairs but not up stairs', 'False'),
-    Question(
-        'Approximately one quarter of human bones are in the feet.', 'True'),
-    Question('A slug\'s blood is green.', 'True'),
-  ];
-
   List<Icon> scoreKeeper = [];
 
   Icon checkIconWhite = const Icon(
@@ -52,8 +47,8 @@ class _QuizPageState extends State<QuizPage> {
     color: Colors.white,
   );
 
-  void checkAnswer(String answer) {
-    if (questionList[questionCount].answerText.toString() == answer) {
+  void checkAnswer(bool answer) {
+    if (quizBrain.getAnswer() == answer) {
       scoreKeeper.add(
         const Icon(Icons.check, color: Colors.green),
       );
@@ -64,16 +59,8 @@ class _QuizPageState extends State<QuizPage> {
     }
   }
 
-  void checkCount() {
-    if (questionCount < questionList.length - 1) {
-      questionCount++;
-    } else {
-      questionCount = 0;
-    }
-  }
-
   // Function to create true and false buttons
-  Expanded buildCard(Color color, String answer, Icon icon) {
+  Expanded buildCard(Color color, bool answer, Icon icon) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -85,12 +72,12 @@ class _QuizPageState extends State<QuizPage> {
               onPressed: () {
                 setState(() {
                   checkAnswer(answer);
-                  checkCount();
+                  quizBrain.nextQuestion();
                 });
               },
               icon: icon,
               label: Text(
-                answer,
+                answer.toString(),
                 style: const TextStyle(
                   fontFamily: 'Source Sans Pro',
                   fontSize: 24.0,
@@ -118,7 +105,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questionList[questionCount].questionText.toString(),
+                quizBrain.getQuestionText(),
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 25.0,
@@ -129,9 +116,9 @@ class _QuizPageState extends State<QuizPage> {
           ),
         ),
         // True Button
-        buildCard(Colors.green, 'True', checkIconWhite),
+        buildCard(Colors.green, true, checkIconWhite),
         // False Button
-        buildCard(Colors.red, 'False', closeIconWhite),
+        buildCard(Colors.red, false, closeIconWhite),
         // Score
         Row(
           children: scoreKeeper,
