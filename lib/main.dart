@@ -48,6 +48,7 @@ class _QuizPageState extends State<QuizPage> {
   );
 
   void checkAnswer(bool answer) {
+    questionCount++;
     if (quizBrain.getAnswer() == answer) {
       scoreKeeper.add(
         const Icon(Icons.check, color: Colors.green),
@@ -57,6 +58,11 @@ class _QuizPageState extends State<QuizPage> {
         const Icon(Icons.close, color: Colors.red),
       );
     }
+  }
+
+  void clearAnswers() {
+    scoreKeeper.removeRange(0, 9);
+    questionCount = 0;
   }
 
   // Function to create true and false buttons
@@ -73,6 +79,9 @@ class _QuizPageState extends State<QuizPage> {
                 setState(() {
                   checkAnswer(answer);
                   quizBrain.nextQuestion();
+                  if (questionCount >= 10) {
+                    clearAnswers();
+                  }
                 });
               },
               icon: icon,

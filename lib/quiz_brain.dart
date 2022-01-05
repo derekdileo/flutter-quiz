@@ -1,6 +1,7 @@
 import 'question.dart';
 
 class QuizBrain {
+  // '_' before 'questionNumber' and 'questionList' makes them private
   int _questionNumber = 0;
 
   final List<Question> _questionList = [
@@ -36,9 +37,15 @@ class QuizBrain {
   ];
 
   void nextQuestion() {
-    if (_questionNumber < _questionList.length) {
+    if (_questionNumber < _questionList.length - 1) {
       _questionNumber++;
+    } else {
+      resetQuestionNumber();
     }
+  }
+
+  void resetQuestionNumber() {
+    _questionNumber = 0;
   }
 
   String getQuestionText() {
