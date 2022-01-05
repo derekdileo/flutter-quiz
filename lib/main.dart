@@ -29,8 +29,18 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  // Instantiate lists to keep questions and score
-  List<String> questions = [];
+  // Instantiate local variables
+
+  List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.', // false,
+    'Approximately one quarter of human bones are in the feet.', // true,
+    'A slug\'s blood is green.', //true,
+  ];
+
+  int questionCount = 0;
+
+  List<String> answers = ['false', 'true', 'true'];
+
   List<Icon> scoreKeeper = [];
 
   var checkIcon = const Icon(
@@ -55,6 +65,11 @@ class _QuizPageState extends State<QuizPage> {
           child: Center(
             child: TextButton.icon(
               onPressed: () {
+                if (questionCount < questions.length - 1) {
+                  questionCount++;
+                } else {
+                  questionCount = 0;
+                }
                 setState(() {
                   scoreKeeper.add(
                     Icon(
@@ -90,15 +105,15 @@ class _QuizPageState extends State<QuizPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
-        const Expanded(
+        Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[questionCount],
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -106,10 +121,113 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        buildCard(Colors.green, Icons.check, Icons.check, 'True'),
-        buildCard(Colors.red, Icons.close, Icons.close, 'False'),
+        // buildCard(Colors.green, Icons.check, Icons.check, 'True'),
+        // buildCard(Colors.red, Icons.close, Icons.close, 'False'),
 
-        // TODO: Add a Row here as your score keeper
+        // True
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Card(
+              color: Colors.green,
+              // margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+              child: Center(
+                child: TextButton.icon(
+                  onPressed: () {
+                    if (questionCount < questions.length - 1) {
+                      questionCount++;
+                    } else {
+                      questionCount = 0;
+                      scoreKeeper.removeRange(0, questions.length);
+                    }
+                    setState(() {
+                      if (answers[questionCount] == 'true') {
+                        scoreKeeper.add(
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                          ),
+                        );
+                      } else {
+                        scoreKeeper.add(
+                          const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                          ),
+                        );
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'True',
+                    style: TextStyle(
+                      fontFamily: 'Source Sans Pro',
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        // False
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Card(
+              color: Colors.red,
+              // margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 25.0),
+              child: Center(
+                child: TextButton.icon(
+                  onPressed: () {
+                    if (questionCount < questions.length - 1) {
+                      questionCount++;
+                    } else {
+                      questionCount = 0;
+                      scoreKeeper.removeRange(0, questions.length);
+                    }
+                    setState(() {
+                      if (answers[questionCount] == 'false') {
+                        scoreKeeper.add(
+                          const Icon(
+                            Icons.check,
+                            color: Colors.green,
+                          ),
+                        );
+                      } else {
+                        scoreKeeper.add(
+                          const Icon(
+                            Icons.close,
+                            color: Colors.red,
+                          ),
+                        );
+                      }
+                    });
+                  },
+                  icon: const Icon(
+                    Icons.close,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'False',
+                    style: TextStyle(
+                      fontFamily: 'Source Sans Pro',
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         Row(
           children: scoreKeeper,
         ),
@@ -117,9 +235,3 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 }
-
-/*
-* question1: 'You can lead a cow down stairs but not up stairs.', false,
-* question2: 'Approximately one quarter of human bones are in the feet.', true,
-* question3: 'A slug\'s blood is green.', true,
-* */
