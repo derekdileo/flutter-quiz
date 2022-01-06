@@ -3,8 +3,10 @@ import 'question.dart';
 class QuizBrain {
   // '_' before 'questionNumber' and 'questionList' makes them private
   int _questionNumber = 0;
+  bool _eof = false;
 
   final List<Question> _questionList = [
+    // f,f,t,t,f,t,t,t,t,f,t,f,t,t,t,t
     Question('You can lead a cow down stairs but not up stairs', false),
     Question(
         'Approximately one quarter of human bones are in the feet.', false),
@@ -40,12 +42,14 @@ class QuizBrain {
     if (_questionNumber < _questionList.length - 1) {
       _questionNumber++;
     } else {
-      resetQuestionNumber();
+      _eof = true;
+      // resetQuestions();
     }
   }
 
-  void resetQuestionNumber() {
+  void resetQuestions() {
     _questionNumber = 0;
+    _eof = false;
   }
 
   String getQuestionText() {
@@ -54,5 +58,9 @@ class QuizBrain {
 
   bool getAnswer() {
     return _questionList[_questionNumber].answer;
+  }
+
+  bool getEOF() {
+    return _eof;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuizBrain quizBrain = QuizBrain();
 
@@ -61,8 +62,14 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void clearAnswers() {
-    scoreKeeper.removeRange(0, 9);
+    Alert(
+            context: context,
+            title: "Alert",
+            desc: "You've reached the end of the quiz!")
+        .show();
+    scoreKeeper.removeRange(0, questionCount);
     questionCount = 0;
+    quizBrain.resetQuestions();
   }
 
   // Function to create true and false buttons
@@ -79,7 +86,7 @@ class _QuizPageState extends State<QuizPage> {
                 setState(() {
                   checkAnswer(answer);
                   quizBrain.nextQuestion();
-                  if (questionCount >= 10) {
+                  if (quizBrain.getEOF()) {
                     clearAnswers();
                   }
                 });
